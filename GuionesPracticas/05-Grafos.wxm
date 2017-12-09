@@ -1,0 +1,1073 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 16.04.2 ] */
+
+/* [wxMaxima: comment start ]
+Alumno: David Cabezas Berrido
+DNI: 20079906D
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: title   start ]
+Grafos.
+   [wxMaxima: title   end   ] */
+
+/* [wxMaxima: fold    start ] */
+
+/* [wxMaxima: section start ]
+Grafos a partir de sus listas de vértices y lados.
+   [wxMaxima: section end   ] */
+
+/* [wxMaxima: fold    start ] */
+
+/* [wxMaxima: comment start ]
+En esta práctica estudiaremos diversos conceptos sobre grafos. Para trabajar con ellos,
+como en prácticas anteriores, hemos de cargar el paquete "graphs". 
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+load(graphs)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Para introducir un grafo en wxMaxima usamos la función create_graph. 
+
+Esta función recibe como argumento dos listas: la lista de vértices y la lista 
+de lados del grafo en cuestión. 
+
+Cada lado, a su vez, es una lista de longitud dos que incluye los vértices que une.
+
+Por ejemplo, la siguiente línea crea un triángulo (un grafo con tres vértices y 
+tres lados), K3.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+K3:create_graph([1,2,3],[[1,2],[2,3],[3,1]]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Mediante el uso de la orden print_graph obtenemos información sobre el grafo.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+print_graph(K3);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Es decir, K3 (el grafo que hemos definido previamente) es un grafo con tres vértices 
+y tres lados: 
+
+- El vértice 1 está unido con los vértices 3 y 2 (eso indica la primera línea),
+
+- El vértice 2 está unido a los vértices 3 y 1, 
+
+- Y el vértice 3 está unido a los vértices 1 y 2.  
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: comment start ]
+Para dibujar un grafo usaremos la orden draw_graph. Más adelante, veremos algunas opciones 
+que ofrece esta función. Por ejemplo, si deseamos dibujar un grafo dirigido, incluiremos la opción 
+directed=true.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(K3);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+T3:create_graph([1,2,3],[[1,2],[3,2],[2,3],[3,1]]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Los lados [3,2] y [2,3] son el mismo, aunque ambas listas serían diferentes.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+T3:create_graph([1,2,3],[[1,2],[3,2],[2,3],[3,1]],directed=true);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+En un grafo dirigido, un lado tiene un origen y un final definidos, luego los lados [2,3] y [3,2] son diferentes.
+A la hora de recorrer un grafo dirigido, no se puede recorrer un lado en sentido contrario.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+print_graph(T3);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Edges (lados) en grafos no dirigidos, arcs (arcos) en grafos dirigidos.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(K3, directed=true);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(T3);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Se ve un lado con dos puntas de flecha, pero en realidad serían dos lados superpuestos.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: fold    end   ] */
+
+/* [wxMaxima: section start ]
+Grafos predefinidos en wxMaxima.
+   [wxMaxima: section end   ] */
+
+/* [wxMaxima: fold    start ] */
+
+/* [wxMaxima: comment start ]
+Maxima tiene predefinidos determinados grafos en el paquete graphs. Algunos ejemplos son:
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+K6:complete_graph(6)   /*Crea el grafo completo de 6 vértices*/;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+K34:complete_bipartite_graph(4,3) /*Crea el grafo bipartido completo con particiones de  4 y 3 vértices*/;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+CK34:complement_graph(K34) /*Crea el grafo complementario de K34, esto es, aquel cuyos 
+                           vértices son los mismos que K34 y sus lados son todos aquellos 
+                           que K34 no tiene, en este caso el grafo complementario tiene 2
+                           componentes conexas, K3 y K4.*/;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Como sabemos, podemos visualizarlos haciendo uso de draw_graph:
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(K6);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(K34);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(CK34);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Estos son K4 y K3, pero sus lados pueden aparecer superpuestos.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+print_graph(CK34);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Algunos ejemplos más, que hemos estudiado en teoría:
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+E9:empty_graph(9);         /* Grafo vacío */;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(E9);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+C7:cycle_graph(7) /* Crea un grafo que es un ciclo de 7 vértices, no confundir con cycle_digraph */;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(C7);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(cycle_graph(20));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+cycle_digraph(7) /*Crea un grafo dirigido que es un ciclo de 7 vértices, no confundir con cycle_graph */;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(cycle_digraph(7));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+P5:path_graph(5) /*Crea un grafo que es un camino de longitud 4 (con 5 vértices). No confundir con path_digraph*/;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(P5);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+path_digraph(5) /*Crea un grafo que es un camino >>dirigido<< de longitud 4 
+                  (con 5 vértices). No confundir con path_graph*/;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(path_digraph(5));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Ahora los grafos tipo estrella y rueda, sobre los que no existe la variación digraph, a diferencia de los anteriores
+(sí, se puede realizar un grafo dirigido sin lados con la función empty_digraph).
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+W5:wheel_graph(5);     /* Grafos tipo rueda */;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(W5);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+S7:star_graph(7);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(S7);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Debemos tener en cuenta que la función star_graph(n) de Maxima crea una estrella de 6 puntas, mientras que wheel_graph(n)
+crea un grafo de n+1 vértices.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: comment start ]
+Ahora veamos dos tipos de grafos que no hemos visto en teoría.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+gf:flower_snark (6);       /* Grafo de 4n vértices y 6n lados. */;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(gf);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+print_graph(gf);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+Cb4:cube_graph(4) /*Crea un grafo que se corresponde con un cubo tetradimensional, un teseracto*/;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(Cb4);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+print_graph(Cb4);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: fold    end   ] */
+
+/* [wxMaxima: section start ]
+Grafos a partir de su matriz de adyacencia.
+   [wxMaxima: section end   ] */
+
+/* [wxMaxima: fold    start ] */
+
+/* [wxMaxima: comment start ]
+Otra posibilidad que ofrece wxMaxima para crear un grafo es hacerlo a través 
+de su matriz de adyacencia. Por ejemplo:
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+A:matrix([0,1,1,1],[1,0,1,1],[1,1,0,1],[1,1,1,0]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+K4:from_adjacency_matrix(A);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Como vemos, wxMaxima ha creado el grafo. Para comprobar que se trata del grafo
+completo de 4 vértices podemos solicitar que lo dibuje:
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(K4);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+O también podemos preguntar haciendo uso de la orden "is" si efectivamente el grafo K4
+introducido en base a la matriz de adyacencia se corresponde con el grafo completo de 
+4 vértices:
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+is_isomorphic(K4,complete_graph(4));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Las potencias de la matriz (A^n), indican el número de caminos de longitud n entre cada dos vértices.
+Pero para multiplicar matrices en Maxima no podemos usar ni "*" ni "^", es decir, para obtener A al cuadrado
+no podemos escribir ni A*A ni A^2, sino que para multiplicar matrices debemos usar los operadores ".", o "^^" 
+de otra forma, multiplicaríamos cada elemento (aij) de la matriz por el elemento (cij) de la otra o elevaríamos 
+cada elemento a n.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+A2:A.A;   /* A cuadrado, también sirve A^^2 */;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Como vemos, genera el mismo grafo que la matriz A.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+from_adjacency_matrix(A2);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+is_isomorphic(from_adjacency_matrix(A),from_adjacency_matrix(A2));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Pero esta matriz nos indica que existen 3 caminos diferentes de longitud 2 de cada vértice a sí mismo y 2 caminos
+diferentes de longitud 2 entre cada par de vértices diferentes.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: fold    end   ] */
+
+/* [wxMaxima: section start ]
+Grafos a partir de su lista de vértices y una función booleana
+para determinar la lista de lados.
+   [wxMaxima: section end   ] */
+
+/* [wxMaxima: fold    start ] */
+
+/* [wxMaxima: comment start ]
+Además de las ya estudiadas, existe otra forma en wxMaxima de introducir un grafo. 
+La orden make_graph nos permite introducir un grafo dando una lista de vértices y 
+una función booleana de dos variables. Así, se considerarán lados del grafo aquellos 
+para los que la función se satisface (es decir, toma el valor true).
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+f(x,y):=is(mod(x+y,3)=0)$   /* Habrá lados entre cada par de vértices cuya suma sea múltiplo de 3. */;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+grafo:make_graph(makelist(i,i,0,15),f);  /* Tendrá 16 vértices, del 0 al 15. */;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(grafo);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Este grafo no es conexo. 
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+is_connected(grafo);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+De hecho, tiene dos componentes conexas:
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+C:connected_components(grafo);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Que se corresponden con 
+- por una parte, los vértices que son múltiplos de 3,
+- y por otra, los que no son múltiplos de 3.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: comment start ]
+Podemos comprobarlo con la función print_graph.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+print_graph(grafo);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+La orden induced_subgraph nos proporciona un subgrafo de un grafo. Para ello, hay que
+dar la lista de vértices que queremos considerar y el grafo del que deseamos extraer el 
+subgrafo. 
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+grafo1:induced_subgraph(C[1],grafo);  /* C[1] se refiere al primer término de la lista de componentes conexas
+                                         dada anteriormente. */;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(grafo1);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+El primero, es bipartido. Se puede expresar como unión de dos conjuntos disjuntos no vacíos tales
+que los lados siempre tienen un extremo en cada uno. Por un lado los que tienen resto 1 al dividirlos
+entre 3 y por otro lado los que tienen resto 2.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+bipartition(grafo1);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+De hecho, es bipartido completo.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+is_isomorphic(grafo1,complete_bipartite_graph(5,5));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Y un isomorfismo podemos encontrarlo con la orden isomorphism:
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+K55:complete_bipartite_graph(5,5)$
+isomorphism(K55,grafo1);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Aunque el dibujo de K55 se entiende bastante mejor.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(K55);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Consideremos un segundo grafo:
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+grafo2:induced_subgraph(C[2],grafo);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+El grafo grafo2 es un grafo completo. Todos los vértices que son múltiplos de 3 están 
+unidos entre sí. 
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+is_isomorphic(grafo2,complete_graph(6));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+K6:complete_graph(6)$
+isomorphism(K6,grafo2);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: fold    end   ] */
+
+/* [wxMaxima: section start ]
+Nociones de grafos
+   [wxMaxima: section end   ] */
+
+/* [wxMaxima: fold    start ] */
+
+/* [wxMaxima: comment start ]
+Una vez definido un grafo, podemos preguntarnos diversos aspectos sobre él.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: comment start ]
+Lo siguiente nos devuelve la sucesión gráfica (los grados de cada uno de los vértices).
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+degree_sequence(K34);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+A continuación, obtenemos la matriz de adyacencia del grafo CK34. 
+
+La n-ésima potencia de esta matriz nos indica el número de caminos de longitud n 
+que hay entre dos vértices dados.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+B:adjacency_matrix(CK34);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+B^^5;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+La matriz anterior nos informa, por ejemplo, de que 
+
+- Entre el vértice 1 y el vértice 3 hay 61 caminos de longitud 5,
+
+- Mientras que entre el vértice 2 y el vértice 6 no hay caminos de longitud 5.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: comment start ]
+Con la orden hamilton_cycle, podemos conocer si un grafo tiene un ciclo de Hamilton. 
+
+Éste nos devuelve una lista con los vértices que forman el ciclo de Hamilton (en caso
+de existir) o una lista vacía (si no existiera dicho ciclo).
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+ch:hamilton_cycle(K6);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+hamilton_cycle(K34);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Es posible solicitar a wxMaxima que dibuje el grafo y marque el ciclo de Hamilton. Para eso,
+hemos de incluir la opción show_edges=vertices_to_cycle(-), que muestra los lados de los 
+vértices del ciclo.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(K6,show_edges=vertices_to_cycle(ch));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Con la opción show_id=true, conseguimos que se muestren también los nombres de los vértices.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(K6,show_id=true,show_edges=vertices_to_cycle(ch));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Sinteticemos esto en una única función.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+ciclo_de_hamilton(G):=block(ch,
+    ch:hamilton_cycle(G),
+    draw_graph(G,show_edges=vertices_to_cycle(ch),show_edge_color=green));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+ciclo_de_hamilton(W5);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Podemos preguntar también si un grafo es plano o no:
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+is_planar(K6);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+is_planar(K4);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+is_planar(complete_graph(5));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+is_planar(complete_bipartite_graph(3,2));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+is_planar(complete_bipartite_graph(3,3));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Recordemos de K5 y K33 son los grafos más simple que no son planos, y que cualquier grafo no plano los contiene.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: comment start ]
+Para conseguir una representación plana del grafo, podemos usar program=planar_embedding:
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(K4,redraw=true,program=planar_embedding); /* Maxima guarda la posición de los vértices la primera vez
+                                                        que dibjua un grafo, redraw=true hace que los vuelva a situar
+                                                        antes de dibujarlo. */;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(complete_bipartite_graph(3,2),redraw=true,program=planar_embedding);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Sabemos que el grafo K5 no es plano.  
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+K5:complete_graph(5);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+is_planar(K5);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Por lo que si pedimos a wxMaxima una representación plana de K5, devolverá un mensaje
+de error. 
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(K5,redraw=true,program=planar_embedding);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Sin embargo, si quitamos a K5 un lado, el grafo resultante si es plano. 
+Para eso, veamos antes cuáles son los lados de K5.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+edges(K5);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Para eliminar un lado, usamos la orden remove_edge:
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+remove_edge([0,1],K5);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(K5,redraw=true,program=planar_embedding,show_id=true);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Y, efectivamente, obtenemos una representación plana de ese nuevo grafo.
+Y vemos gracias a show_id que el lado que falta es el [0,1]
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: fold    end   ] */
+
+/* [wxMaxima: section start ]
+Modelizando con grafos.
+   [wxMaxima: section end   ] */
+
+/* [wxMaxima: fold    start ] */
+
+/* [wxMaxima: comment start ]
+Vamos a construir un grafo que represente los movimientos del caballo en un tablero 
+de ajedrez 4 x 4. 
+
+Para esto, enumeramos las 16 casillas desde 0 hasta 15:
+
+- las de la fila inferior van de 0 a 3, 
+
+- las de la fila siguiente de 4 a 7,
+
+- y así sucesivamente.
+
+Resulta entonces que:
+
+- el vértice 0 está unido con el 6 y con el 9,
+
+- el vértice 1 está unido con el 7, el 8 y el 10,
+
+- y así sucesivamente.
+
+El grafo que describimos es:  
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+ajedrez:create_graph(makelist(i,i,0,15),[[0,6],[0,9],[1,7],[1,8],[1,10],[2,4],
+[2,9],[2,11],[3,5],[3,10],[4,10],[4,13],[5,11],[5,12],[5,14],[6,8],[6,13],[6,15],[7,9],
+[7,14],[8,14],[9,15],[10,12],[11,13]]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Hemos de tener en cuenta que 
+
+- Las casillas del tablero de ajedrez son, en general, o blancas o negras.
+
+- Un caballo, en cada movimiento, va de una casilla blanca a una negra, o viceversa.
+
+Esto nos da una 2-coloración de este grafo. Por tanto, su número cromático 
+vale 2.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+chromatic_number(ajedrez);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Para obtener una 2-coloración del grafo, sólo hemos de escribir:
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+vertex_coloring(ajedrez);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+El número 2 del principio de la lista de salida obtenida, indica que es posible colorear
+el grafo con dos colores. Luego a cada vértice le asigna un color (denotado por 1 ó 2
+en el segundo argumento de cada sublista).
+
+Es lo mismo decir que el grafo tiene número cromático 2 que decir que es bipartido.
+
+También esto último puede ser preguntado a través de:
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+is_bipartite(ajedrez);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Es más, podemos obtener la división del conjunto de vértices en las dos componentes.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+bipartition(ajedrez);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Y dibujar el grafo separando ambos conjuntos:
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+[x,y]:bipartition(ajedrez);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(ajedrez,show_vertices=x,show_id=true);  /* Destacamos los vértices de la bipartición x en otro color para distinguirlos de la y. */;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Podemos preguntar por el camino más corto para ir de un vértice a otro:
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+shortest_path(0,12,ajedrez);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Que resulta ser el camino simple más largo, cuya longitud se puede obtener con la orden diameter:
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+diameter(ajedrez);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+diameter(K6);
+diameter(K34);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+La orden vertex_degree nos proporciona el grado de un vértice. Vamos a definir una
+función para obtener los vértices de grado 2, de grado 3 y de grado 4.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+gr(x):=is(vertex_degree(x,ajedrez)=a)$   /* Devuelve los vérties de grado a. */
+V:setify(vertices(ajedrez))$
+a:2$             
+Gr2:subset(V,gr);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+a:3$
+Gr3:subset(V,gr);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+a:4$
+Gr4:subset(V,gr);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Los vértices de grado 2 se corresponden con las 4 esquinas del tablero.
+
+Los vértices de grado 4 se corresponden con las cuatro casillas centrales.
+
+Los vértices de grado 3 son el resto de vértices.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: comment start ]
+Si escribimos
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+hamilton_cycle(ajedrez);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Vemos que un caballo de ajedrez no puede recorrer un tablero 4x4 sin repetir casilla y regresar
+a la casilla de origen. 
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+hamilton_path(ajedrez);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Como vemos, tampoco es posible recorrer todo el tablero aún sin la exigencia de regresar a la 
+casilla de origen. 
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: comment start ]
+Con girth podemos conocer la longitud del ciclo más corto.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+girth(ajedrez);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Y odd_girth nos informa de la longitud del ciclo impar más corto.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+odd_girth(ajedrez);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Devuelve infinito, lo que significa que no hay ciclos de longitud impar. Esto es otra
+forma de decir que el grafo es bipartido. 
+
+El comando minimum_spanning_tree proporciona el árbol generador mínimo.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+AG:minimum_spanning_tree(ajedrez);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(AG);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Del mismo modo que ocn el Ciclo de Hamilton, definamos una función que dibuje un grafo
+destacando el mínimo árbol generador.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+arbol_generador(G):=block(t,
+    t:minimum_spanning_tree(G),
+    draw_graph(G,show_edges=edges(t),show_edge_color=purple));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+arbol_generador(K55);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+arbol_generador(ajedrez);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: fold    end   ] */
+
+/* [wxMaxima: section start ]
+Colorear grafos
+   [wxMaxima: section end   ] */
+
+/* [wxMaxima: fold    start ] */
+
+/* [wxMaxima: comment start ]
+La opcion chromatic_number devuelve el número cromático del grafo, el número mínimo de colores diferentes para colorear cada vértice
+sin que dos vértices adyacentes tengan el mismo color.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+chromatic_number(K6);
+chromatic_number(K55);
+chromatic_number(W5);
+chromatic_number(Cb4);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+La opción vertex_coloring muestra una forma óptima de colorearlos, es decir, usa el número cromático de colores distintos.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+vertex_coloring(K6);
+vertex_coloring(K55);
+vertex_coloring(W5);
+vertex_coloring(Cb4);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(Cb4,vertex_coloring=true);
+draw_graph(W5,vertex_coloring=true);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+Petersen:petersen_graph();  /* Grafo de Petersen, famoso por servir de ejemplo y contraejemplo
+                                           en muchas hipótesis sobre la teoría de grafos. */;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+chromatic_number(Petersen);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(Petersen,vertex_coloring=true);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+También se puede con los lados, sin que dos lados que comparten vértice compartan también color.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+chromatic_index(Petersen);    /* Número mínimo de colores para colorear los lados. */
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(Petersen,edge_coloring=true);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: fold    end   ] */
+
+/* [wxMaxima: section start ]
+Grafos ponderados
+   [wxMaxima: section end   ] */
+
+/* [wxMaxima: fold    start ] */
+
+/* [wxMaxima: comment start ]
+Podemos crear un grafo ponderado indicando el peso de cada lado tras cada dupla.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+G:create_graph(makelist(i,i,1,7),[
+        [[1,2],7],[[1,4],5],[[2,3],8],[[2,4],9],
+        [[2,5],7],[[3,5],5],[[4,5],15],
+        [[4,6],6],[[5,6],8],[[5,7],9],
+        [[6,7],11]]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(G,show_id=true,show_weight=true);  /* Con show_weight podemos mostrar el peso de cada lado */;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Simulemos el algoritmo destructivo de Kruskal para obtener el mínimo árbol abarcador.
+Debemos ir eliminando lados de mayor a menor peso siempre que rompamos ciclo.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+G1:copy_graph(G);   /* Para comprobar más tarde. */;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+remove_edge([4,5],G);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+remove_edge([6,7],G);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+remove_edge([2,4],G);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+remove_edge([5,6],G);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+remove_edge([2,3],G);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(G,show_id=true,show_weight=true,program=planar_embedding);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Comprobamos que lo hemos hecho bien con la función minimum_spanning_tree. 
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+t:minimum_spanning_tree(G1);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+is_isomorphic(G,t);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Ahí lo tenemos.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: fold    end   ] */
+
+/* [wxMaxima: section start ]
+Árboles etiquetados
+   [wxMaxima: section end   ] */
+
+/* [wxMaxima: fold    start ] */
+
+/* [wxMaxima: comment start ]
+Podemos asignar etiquetas a los vértices de un grafo con la orden set_vertex_label.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+G:create_graph(makelist(i,i,1,8),[[1,2],[2,3],[2,4],[2,5],[3,6],[6,7],[4,8]]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(G,show_id=true);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Las etiquetas pueden ser números, letras, palabras, objetos, etc.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+set_vertex_label(1,A,G);
+set_vertex_label(2,6534,G);
+set_vertex_label(3,true,G);
+set_vertex_label(4,juan,G);
+set_vertex_label(5,E,G); 
+set_vertex_label(6,random(10),G);  
+set_vertex_label(7,G,G);           /* El propio grafo es la etiqueta. */
+set_vertex_label(8,0,G);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Podemos preguntar por la etiqueta de un vértice concreto.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+get_vertex_label(1,G);
+get_vertex_label(4,G);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+O pedir que Maxima lo dibuje mostrando las etiquetas.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(G,show_label=true);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Para eliminar una etiqueta podemos utilizar clear_vertex_label.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+clear_vertex_label(7,G);
+clear_vertex_label(4,G);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Si un vértice no tiene etiqueta, aparecerá false.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+draw_graph(G,show_label=true,label_alignment=left)  /* label_alignment permite situar las etiquetas, en el centro no se ven bien. */;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+get_vertex_label(7,G);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: fold    end   ] */
+
+/* [wxMaxima: fold    end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$

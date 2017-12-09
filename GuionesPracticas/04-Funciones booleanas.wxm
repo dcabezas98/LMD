@@ -1,0 +1,576 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 16.04.2 ] */
+
+/* [wxMaxima: comment start ]
+Alumno: David Cabezas Berrido
+DNI:2007906D
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: subsect start ]
+Carga del paquete lógica:
+   [wxMaxima: subsect end   ] */
+
+/* [wxMaxima: fold    start ] */
+
+/* [wxMaxima: comment start ]
+Debe estar en la ruta de Maxima, para ello debemos seleccionar Maxima, añadir a la ruta y añadir la carpeta en la que esté contenido. En mi caso:
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+file_search_maxima : cons(sconcat("C:/Users/dxabe/Desktop/DGIIM/Lógica y Métodos Discretos/Prácticas/funciones_booleanas (1)/###.{lisp,mac,mc}"), file_search_maxima)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Ahora podemos cargarlo sin indicar el camino y además funcionan las cargas múltiples.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+load(logica)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: fold    end   ] */
+
+/* [wxMaxima: section start ]
+Expresiones booleanas y tablas funcionales.
+   [wxMaxima: section end   ] */
+
+/* [wxMaxima: fold    start ] */
+
+/* [wxMaxima: comment start ]
+Podemos construir expresiones booleanas utilizando not (complemento), and (ínfimo) y or (supremo).
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+EB1: a and not (b or c);
+EB2: not EB1 and not (not a or b);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Como vemos aplica las leyes de De Morgan automáticamente para simplificar las expresiones.
+
+Ahora utilicemos operaciones más complejas, con la función boolean_form podemos expresarlas
+con las operaciones básicas:
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+EB3:boolean_form(a nand b);   /* Negación de and. */;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+EB4:boolean_form(a nor b);    /* Negación de or. */;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+EB5:boolean_form(a equiv b);   /* a y b deben de tener el mismo valor de verdad. */;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+EB6:boolean_form(a xor b);     /* Conjunción excluyente. */;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+También podemos aplicarla directamente a una expresión más compleja.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+EB7: not a and (b xor (c nand a));
+EB8:boolean_form(EB7);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+EB9: EB4 equiv not (EB5 nor EB7);
+EB10:boolean_form(EB9);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Por suerte tenemos función boolean_simp, que las simplifica.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+boolean_simp(EB9);
+boolean_simp(EB10);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Ahora construiremos las tablas de verdad, no disponibles en la función 5.20 de Maxima.
+Para ello utilizaremos la función boolean_table.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+boolean_table(a xor b);
+boolean_table(a nand b);
+boolean_table(not a);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+boolean_table(EB1);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+boolean_table(EB7);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+boolean_table(EB10);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+También podemos hallar el vector característico, que equivale al resultado de la tabla de verdad, poniendo true en lugar de 1 y false en lugar de 0.
+Es especialmente útil cuando la tabla es demasiado grande.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+characteristic_vector(a);
+characteristic_vector(not a);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+characteristic_vector(EB10);  /* Mucho mejor, sólo tenemos que saber los números en binario. */;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Y podemos comprobar si dos expresiones booleanas son equivalentes (generan la misma función), con la función boolean_equiv. 
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+boolean_equiv(EB2, EB7);
+boolean_equiv(EB9, EB10);  /* EB10 es la forma con operaciones básicas de EB9. */;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+No sería difícil definir una propia a partir de la función vector característico.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+bool_equiv(expr1,expr2):= if characteristic_vector(expr1)=characteristic_vector(expr2) then true else false;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+bool_equiv(EB2, EB7);
+boolean_equiv(EB9,EB10);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Para trabajar con funciones booleanas, es de utilidad trabajar con las formas canónicas disyuntiva y conjuntiva,
+tenemos funciones para hallarlas.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+convert_to_dnf(EB10);   /* Disyuntiva. */;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Tenemos que tener en cuenta la preferencia de las operaciones (not, and, or), ya que esta forma no usa paréntesis.
+Esta expresión es disyunción de 6 mintérminos, luego también podremos expresarla como conjunción de 2 maxtérminos.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+convert_to_cnf(EB10);  /* Conjuntiva. */;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Podemos hallar un mintérmino a partir de un número y sus variables.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+boolean_minterms(5,[a,b,c]);   /* Las dos funciones hacen lo mismo. */
+boolean_minterms(3,[a,b,c]);
+minterminos(5,[a,b,c]);
+minterminos(7,[a,b,c]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+O el supremo (conjunción) de varios mintérminos.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+boolean_minterms([1,3,5,7],[a,b,c]);
+minterminos([2,3,4],[a,b,c]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Lo mismo con los maxtérminos.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+boolean_maxterms([3,5],[a,b,c]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+En esta ocasión, esta función utiliza una notación inversa a la que nosotros utilizamos (utiliza el not para el 0 en lugar de para el 1).
+Pero la función maxterminos lo soluciona.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+maxterminos([3,5],[a,b,c]);
+maxterminos(1,[a,b,c]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Podemos hallar la tabla de una función booleana directamente dando su número y sus variables.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+boolean_expression(2,[a,b,c]);
+boolean_table(%);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+boolean_expression(143,[a,b,c]);
+boolean_table(%);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Funcionaría bien si supieramos como las numera, por suerte contamos con la funcion_booleana.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+funcion_booleana(1,[a,b,c]);
+boolean_table(%);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+funcion_booleana(5,[a,b,c]);
+boolean_table(%);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+funcion_booleana(255,[a,b,c]);
+boolean_table(%);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Ahora sí.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: fold    end   ] */
+
+/* [wxMaxima: section start ]
+Forma reducida y formas irredundantes.
+   [wxMaxima: section end   ] */
+
+/* [wxMaxima: fold    start ] */
+
+/* [wxMaxima: comment start ]
+Tomemos una expresión booleana aleatoria como ejemplo.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+EB:funcion_booleana_al_azar([a,b,c,d]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Podemos saber el número de la expresión calculándolo desde el binario.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+boolean_table(EB);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Ahora convertiremos el número 0000100100101011 a decimal.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+ibase:2$    /* Base en la que máxima lee los números. */;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+0000100100101011;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+ibase:1010$   /* Base 10, la reestablecemos para no llevarnos sorpresas más tarde. */;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Ya sabemos su número, para hallar la forma reducida es conveniente hallar los implicantes primos. 
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+implicantes(EB);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+La forma reducida no es más que la disyunción de los implicantes primos.
+Generalmente, se puede simplificar.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+forma_reducida(EB);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+La función boolean_minimize encuentra una forma óptima (no simplificable con el menor número de implicantes posible.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+boolean_minimize(EB);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Vamos con otra.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+e1: (not b and not c) or (not a and b and c and not d);
+e2: (not a and b and not c and d) or (a and c and not d);
+EB: boolean_simp(not e1 or e2);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+implicantes(EB);
+forma_reducida(EB);
+boolean_minimize(EB);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+La función formas_irredundantes devuelve todas las formas irreducibles de la expresión.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+f46031:funcion_booleana(46031,[x,y,z,t]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+formas_irredundantes(f46031);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+boolean_minimize(f46031);   /* Esta función devuelve una de ellas. */;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+f219:funcion_booleana(219,[a,b,c]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+implicantes(f219);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+boolean_minimize(f219);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+formas_irredundantes(f219);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+f143:funcion_booleana(143,[a,b,c]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+implicantes(f143);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+boolean_minimize(f143);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+formas_irredundantes(f143);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Analicemos unas cuantas funciones.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+exp: not((a and b and c and d)or(not a and not b and not c and not d));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+implicantes(exp);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+forma_reducida(exp);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+showtime:true;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+formas_irredundantes(exp);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+boolean_minimize(exp);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+boolean_minimize es mucho más rápida y eficaz si tan solo necesitamos calcular una forma irreducible.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+showtime:false;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Ahora veamos unos cuantos ejemplos de la relación de ejercicios.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: comment start ]
+Ejercicio 5.11. Debemos encontrar las formas disyuntivas óptimas a partir de la función canónica.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: comment start ]
+f5
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+f5:(not x and not y and not z and not t)or(not x and not y and z and not t)or(not x and y and not z and not t)or(not x and y and z and not t)or(not x and y and z and t)or(x and not y and not z and not t)or(x and not y and z and not t)or(x and y and not z and not t);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Si no dispusiéramos de Maxima, lo haríamos por el algoritmo de Quine o al método de consensos,
+pero nos basta con utilizar la función formas_irredundantes.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+formas_irredundantes(f5);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+f6. Pero para no tener que escribir tantos implicantes, escribiremos la función desde el número en binario.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+ibase:2;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+1111010010110000;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+ibase:1010;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+f6:funcion_booleana(62640,[x,y,z,t]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+formas_irredundantes(f6);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+f2
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+ibase:2;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+01100111;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+ibase:1010;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+f2:funcion_booleana(103,[x,y,z]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+formas_irredundantes(f2);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Esta vez han salido dos, vamos con un apartado más. f4
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+ibase:2;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+0011001110111100;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+ibase:1010;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+f4:funcion_booleana(13244,[x,y,z,t]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+formas_irredundantes(f4);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Vamos con algo más práctico, ejercicio 5.13. Las respuestas correctas de exámen 
+tipo test son A:SI, B: NO, C:SI, D:SI. Hagamos una función que corrija los exámentes,
+se aprueba con 3 aciertos. 
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+aprobado:(A and not B and C) or (A and not B and D) or (A and C and D) or (not B and C and D);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+convert_to_dnf(aprobado);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+corrige(expr):=if boolean_equiv(aprobado,aprobado or expr) then (true,print("aprobado")) else (false,print("suspenso"));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+corrige(A and not B and C and D);
+corrige(A and B and C and not D);
+corrige(A and B and C);
+corrige(A and not B and C);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Ejercicio 5.16: calcular las formas canónicas conjuntiva y disyuntiva de:
+f(x,y,z)=(x*y+z)*+xz*
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+f:not(not x and y or z) or x and not z;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+convert_to_cnf(f);  /* Forma canónica conjuntiva. */;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+convert_to_dnf(f);  /* Forma canónica disyuntiva. */;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Terminemos con el 5.18: calcular las formas irredundantes de f sabiendo que f
+toma el valor 1 exclusivamente para (0,0,0,0), (0,0,0,1), (0,1,0,0), (0,1,1,1), 
+(1,0,1,1), (1,1,1,0) y (1,1,1,1). Lo haríamos por el algoritmo de Quine, pero
+podemos utilizar Maxima para comprobar nuestros resultados.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+f:minterminos([0,1,4,7,11,14,15],[x,y,z,t]);   /* Pasamos del binario. */;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+boolean_table(f);  /* Comprobamos que efectivamente, es nuestra función. */;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+formas_irredundantes(f);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Pues sólo tiene una. Así podemos comprobar que la solución es correcta.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: fold    end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$
