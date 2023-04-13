@@ -1,5 +1,4 @@
 % Autor: David Cabezas Berrido
-% DNI: 20079906 D
 % Fecha: 12/01/2017
 
 /* Hombres */
@@ -37,9 +36,9 @@ mujer(simplicia).
 mujer(mama).
 
 /* Progenitores.
-   A la derecha de cada pareja, he incluido un número que indica los años que se
+   A la derecha de cada pareja, he incluido un nÃºmero que indica los aÃ±os que se
    lleva la persona con su hijo/a, cuando no usemos este dato, colocaremos en dicha
-   posición la variable anónima "_" */
+   posiciÃ³n la variable anÃ³nima "_" */
 
 /* Padres */
 progenitor(adan,cain,24).
@@ -88,7 +87,7 @@ madre(X,Y):- progenitor(X,Y,_),mujer(X).        % Verdadero si X es madre de Y
 
 hermanos(X,Y):- progenitor(Z,X,_),progenitor(Z,Y,_).  % Verdadero si X e y son hermanos/as
 
-tio(X,Y):- hermanos(X,Z),progenitor(Z,Y,_).     % Verdadero si X es tío/a de Y
+tio(X,Y):- hermanos(X,Z),progenitor(Z,Y,_).     % Verdadero si X es tÃ­o/a de Y
 
 sobrino(X,Y):- tio(Y,X).        % Verdadero si X es sobrino de Y
 
@@ -97,20 +96,20 @@ abuelo(X,Y):- progenitor(X,Z,_), progenitor(Z,Y,_).   % Verdadero si X es abuelo
 nieto(X,Y):- abuelo(Y,X).    % Verdadero si X es nieto de Y
 
 antepasado(X,Y):- progenitor(X,Y,_).                    % Verdadero si X es progenitor de Y
-antepasado(X,Y):- progenitor(X,Z,_),antepasado(Z,Y).    % O progenitor de algún Z antepasado de Y
+antepasado(X,Y):- progenitor(X,Z,_),antepasado(Z,Y).    % O progenitor de algÃºn Z antepasado de Y
 
 descendiente(X,Y):- antepasado(Y,X).         % Verdadero si X es descendiente de Y
 
-antepasadoComun(X,Y):- antepasado(Z,X),antepasado(Z,Y).  % Verdadero si X e y tienen algún antepasado común
+antepasadoComun(X,Y):- antepasado(Z,X),antepasado(Z,Y).  % Verdadero si X e y tienen algÃºn antepasado comÃºn
 
 antepasadoComun(X,Y,Z):- antepasado(Z,X),antepasado(Z,Y). % Verdadero si Z es antepasado de X y de Y
 
-/* Devuelve la diferencia de años entre un antepasado y un descendiente,
-   para llamar a la función, hay que introducir la variable en la que queramos
+/* Devuelve la diferencia de aÃ±os entre un antepasado y un descendiente,
+   para llamar a la funciÃ³n, hay que introducir la variable en la que queramos
    que se almacene el resultado. */
 diferenciaAnios(X,Y,A):- progenitor(X,Y,A).
 diferenciaAnios(X,Y,A):- progenitor(X,Z,A1), diferenciaAnios(Z,Y,A2), A is A1+A2.
 
-/* Ahora para que también funciones introduciendo primero el descendiente. */
+/* Ahora para que tambiÃ©n funciones introduciendo primero el descendiente. */
 diferenciaAnios(X,Y,A):- progenitor(Y,X,A).
 diferenciaAnios(X,Y,A):- progenitor(Y,Z,A1), diferenciaAnios(X,Z,A2), A is A1+A2.
